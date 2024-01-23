@@ -3,8 +3,8 @@
 <title>Hello World!</title>
 </head>
 <body>
-	<h1>Welcome to CITTECHNOLOGIES...!!!</h1>
-	<h1>K8s project has been completed for batch30!!</h1>
+	<h1>Welcome to ASPIRE TECHNOLOGIES...!!!</h1>
+	<h1>Welcome to DevOps!!</h1>
 	<h1>Thank you!!!</h1>
 	<p>
 		It is now
