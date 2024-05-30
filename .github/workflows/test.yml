@@ -3,12 +3,16 @@ name: Manual Trigger Workflow
 on:
   workflow_dispatch:
     inputs:
-      Anonymous:
-        description: 'Customer Anonymous'
+      Instructions:
+        description: 'Please review the following instructions'
         type: boolean
         default: false
         required: false
-    name: 'Trigger Manual Workflow' # This sets the name for the manual trigger
+      Anonymous:
+        description: 'Is the customer anonymous? Set to true if the customer wishes to remain anonymous.'
+        type: boolean
+        default: false
+        required: true
 
 jobs:
   example_job:
@@ -19,4 +23,3 @@ jobs:
       
       - name: Print input value
         run: echo "Anonymous input value is"
-
