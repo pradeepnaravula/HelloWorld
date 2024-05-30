@@ -4,10 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       Instructions:
-        description: 'Please review the following instructions'
+        description: |
+          **Instructions:**
+          1. Make sure you have the necessary permissions.
+          2. Verify the changes you intend to make.
+          3. Ensure that the input below is correctly set.
         type: boolean
         default: false
-        required: false
+        required: true
       Anonymous:
         description: 'Is the customer anonymous? Set to true if the customer wishes to remain anonymous.'
         type: boolean
@@ -21,5 +25,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       
-      - name: Print input value
-        run: echo "Anonymous input value is"
+      - name: Print input values
+        run: |
+          echo "Anonymous input value is: ${{ github.event.inputs.Anonymous }}"
