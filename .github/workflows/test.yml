@@ -1,11 +1,12 @@
-name: Manual Trigger Workflow
+name: Manual Deploy with Inputs
 
 on:
   workflow_dispatch:
     inputs:
       Message:
-        description: 'PPE Deploy'
+        description: 'Deploy PPE'
         type: string
+        default: 'Instructions'
         required: false
       Anonymous:
         description: 'Anonymous'
@@ -14,12 +15,24 @@ on:
         required: true
 
 jobs:
-  example_job:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Display Inputs
+      run: |
+        echo "Message: ${{ github.event.inputs.Message }}"
+        echo "Anonymous: ${{ github.event.inputs.Anonymous }}"
       
-      - name: Print input values
-        run: |
-          echo "Anonymous input value is: ${{ github.event.inputs.Anonymous }}"
+    - name: Conditional Step
+      if: ${{ github.event.inputs.Anonymous == 'true' }}
+      run: |
+        echo "Running in anonymous mode"
+
+    - name: Non-Anonymous Step
+      if: ${{ github.event.inputs.Anonymous == 'false' }}
+      run: |
+        echo "Running with user identification"
