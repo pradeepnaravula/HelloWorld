@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       InfoMessage:
-        description: 'Note: Ensure all deployment prerequisites are met before proceeding.'
+        description: 'Deploy PPE'
         type: string
         required: false
-        default: 'This is a placeholder and can be ignored.'
+        
       Anonymous:
         description: 'Anonymous'
         type: boolean
