@@ -6,7 +6,7 @@ on:
       Info:
         description: 'PPE Deploy'
         type: string
-        required: true
+        required: false
       Anonymous:
         description: 'Anonymous'
         type: boolean
