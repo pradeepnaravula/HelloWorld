@@ -3,32 +3,30 @@ name: Manual Deploy with Inputs
 on:
   workflow_dispatch:
     inputs:
-      Message:
-        description: 'Deploy PPE'
+      Info:
+        description: 'PPE Deploy'
         type: string
-        required: false
-        default: ''
+        required: true
       Anonymous:
         description: 'Anonymous'
         type: boolean
         default: false
-        required: true
+        required: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Display Start Message
+      run: echo "Starting the deployment process..."
+
     - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Display Inputs
       run: |
-        if [ -z "${{ github.event.inputs.Message }}" ]; then
-          echo "Message: No message provided"
-        else
-          echo "Message: ${{ github.event.inputs.Message }}"
-        fi
+        echo "Info: ${{ github.event.inputs.Info }}"
         echo "Anonymous: ${{ github.event.inputs.Anonymous }}"
       
     - name: Conditional Step
