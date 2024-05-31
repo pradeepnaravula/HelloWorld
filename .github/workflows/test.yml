@@ -3,10 +3,11 @@ name: Manual Deploy with Inputs
 on:
   workflow_dispatch:
     inputs:
-      Info:
-        description: 'PPE Deploy'
+      InfoMessage:
+        description: 'Note: Ensure all deployment prerequisites are met before proceeding.'
         type: string
         required: false
+        default: 'This is a placeholder and can be ignored.'
       Anonymous:
         description: 'Anonymous'
         type: boolean
@@ -26,15 +27,15 @@ jobs:
 
     - name: Display Inputs
       run: |
-        echo "Info: ${{ github.event.inputs.Info }}"
+        echo "Info Message: ${{ github.event.inputs.InfoMessage }}"
         echo "Anonymous: ${{ github.event.inputs.Anonymous }}"
       
-    - name: Conditional Step
+    - name: Conditional Step for Anonymous
       if: ${{ github.event.inputs.Anonymous }}
       run: |
         echo "Running in anonymous mode"
 
-    - name: Non-Anonymous Step
+    - name: Conditional Step for Non-Anonymous
       if: ${{ !github.event.inputs.Anonymous }}
       run: |
         echo "Running with user identification"
