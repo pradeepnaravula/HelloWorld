@@ -7,7 +7,7 @@ on:
         description: 'Deploy PPE'
         type: string
         required: false
-        default: ''
+        default: 'Select the customers to deploy'
         
       Anonymous:
         description: 'Anonymous'
