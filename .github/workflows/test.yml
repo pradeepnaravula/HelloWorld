@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       Message:
-        description: 'Instructions: Make sure you have the necessary permissions. Verify the changes you intend to make.'
+        description: 'PPE Deploy'
         type: string
         default: 'Instructions'
         required: false
       Anonymous:
-        description: 'Is the customer anonymous? Set to true if the customer wishes to remain anonymous.'
+        description: 'PPE Deploy'
         type: boolean
         default: false
         required: true
