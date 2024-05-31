@@ -6,7 +6,6 @@ on:
       Message:
         description: 'Deploy PPE'
         type: string
-        default: 'Instructions'
         required: false
       Anonymous:
         description: 'Anonymous'
