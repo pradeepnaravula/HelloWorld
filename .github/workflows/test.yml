@@ -3,16 +3,16 @@ name: Manual Deploy with Inputs
 on:
   workflow_dispatch:
     inputs:
-      PPE_Deploy:
-        description: 'Deploy to PPE'
-        type: boolean
-        default: false
+      PPE_Customer:
+        description: 'Select customer for PPE deployment'
+        type: string
         required: false
-      PROD_Deploy:
-        description: 'Deploy to PROD'
-        type: boolean
-        default: false
+        default: 'Customer1'
+      PROD_Customer:
+        description: 'Select customer for PROD deployment'
+        type: string
         required: false
+        default: 'CustomerA'
 
 jobs:
   deploy:
@@ -23,21 +23,17 @@ jobs:
 
       - name: Display input values
         run: |
-          echo "PPE Deployment: ${{ github.event.inputs.PPE_Deploy }}"
-          echo "PROD Deployment: ${{ github.event.inputs.PROD_Deploy }}"
+          echo "PPE Customer: ${{ github.event.inputs.PPE_Customer }}"
+          echo "PROD Customer: ${{ github.event.inputs.PROD_Customer }}"
 
       - name: Conditional Deployment for PPE
-        if: ${{ github.event.inputs.PPE_Deploy == 'true' }}
+        if: ${{ github.event.inputs.PPE_Customer != null }}
         run: |
-          echo "Deploying to PPE environment"
-          echo "Info Message: ${{ github.event.inputs.InfoMessage }}"
-          echo "Anonymous: ${{ github.event.inputs.Anonymous }}"
+          echo "Deploying to PPE environment for selected customer: ${{ github.event.inputs.PPE_Customer }}"
           # Add your deployment steps for PPE here
 
       - name: Conditional Deployment for PROD
-        if: ${{ github.event.inputs.PROD_Deploy == 'true' }}
+        if: ${{ github.event.inputs.PROD_Customer != null }}
         run: |
-          echo "Deploying to PROD environment"
-          echo "Info Message: ${{ github.event.inputs.InfoMessage }}"
-          echo "KHQ: ${{ github.event.inputs.KHQ }}"
+          echo "Deploying to PROD environment for selected customer: ${{ github.event.inputs.PROD_Customer }}"
           # Add your deployment steps for PROD here
