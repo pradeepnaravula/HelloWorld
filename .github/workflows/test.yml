@@ -3,14 +3,25 @@ name: Manual Deploy with Inputs
 on:
   workflow_dispatch:
     inputs:
+      DeployEnvironment:
+        description: 'Choose deployment environment'
+        type: choice
+        required: true
+        options:
+          - PPE
+          - PROD
       InfoMessage:
-        description: 'Deploy PPE'
+        description: 'Deployment Message'
         type: string
         required: false
         default: 'Select the customers to deploy'
-        
-      Anonymous:
-        description: 'Anonymous'
+      DeployToAnonymous:
+        description: 'Deploy to Anonymous'
+        type: boolean
+        default: false
+        required: false
+      DeployToKHQ:
+        description: 'Deploy to KHQ'
         type: boolean
         default: false
         required: false
@@ -18,25 +29,37 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Display Start Message
-      run: echo "Starting the deployment process..."
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Display input values
+        run: |
+          echo "Deploy Environment: ${{ github.event.inputs.DeployEnvironment }}"
+          echo "Info Message: ${{ github.event.inputs.InfoMessage }}"
+          echo "Deploy to Anonymous: ${{ github.event.inputs.DeployToAnonymous }}"
+          echo "Deploy to KHQ: ${{ github.event.inputs.DeployToKHQ }}"
 
-    - name: Display Inputs
-      run: |
-        echo "Info Message: ${{ github.event.inputs.InfoMessage }}"
-        echo "Anonymous: ${{ github.event.inputs.Anonymous }}"
-      
-    - name: Conditional Step for Anonymous
-      if: ${{ github.event.inputs.Anonymous }}
-      run: |
-        echo "Running in anonymous mode"
+      - name: Conditional Deployment for PPE to Anonymous
+        if: ${{ github.event.inputs.DeployEnvironment == 'PPE' && github.event.inputs.DeployToAnonymous == 'true' }}
+        run: |
+          echo "Deploying to PPE environment for Anonymous customer"
+          # Add your deployment steps for PPE Anonymous here
 
-    - name: Conditional Step for Non-Anonymous
-      if: ${{ !github.event.inputs.Anonymous }}
-      run: |
-        echo "Running with user identification"
+      - name: Conditional Deployment for PPE to KHQ
+        if: ${{ github.event.inputs.DeployEnvironment == 'PPE' && github.event.inputs.DeployToKHQ == 'true' }}
+        run: |
+          echo "Deploying to PPE environment for KHQ customer"
+          # Add your deployment steps for PPE KHQ here
+
+      - name: Conditional Deployment for PROD to Anonymous
+        if: ${{ github.event.inputs.DeployEnvironment == 'PROD' && github.event.inputs.DeployToAnonymous == 'true' }}
+        run: |
+          echo "Deploying to PROD environment for Anonymous customer"
+          # Add your deployment steps for PROD Anonymous here
+
+      - name: Conditional Deployment for PROD to KHQ
+        if: ${{ github.event.inputs.DeployEnvironment == 'PROD' && github.event.inputs.DeployToKHQ == 'true' }}
+        run: |
+          echo "Deploying to PROD environment for KHQ customer"
+          # Add your deployment steps for PROD KHQ here
