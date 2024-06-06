@@ -3,16 +3,26 @@ name: Manual Deploy with Inputs
 on:
   workflow_dispatch:
     inputs:
+      PPE_Deploy:
+        description: 'Deploy to PPE'
+        type: boolean
+        default: false
+        required: false
       PPE_Customer:
         description: 'Select customer for PPE deployment'
         type: string
         required: false
-        default: 'Customer1'
+        default: ''
+      PROD_Deploy:
+        description: 'Deploy to PROD'
+        type: boolean
+        default: false
+        required: false
       PROD_Customer:
         description: 'Select customer for PROD deployment'
         type: string
         required: false
-        default: 'CustomerA'
+        default: ''
 
 jobs:
   deploy:
@@ -23,17 +33,19 @@ jobs:
 
       - name: Display input values
         run: |
+          echo "PPE Deployment: ${{ github.event.inputs.PPE_Deploy }}"
           echo "PPE Customer: ${{ github.event.inputs.PPE_Customer }}"
+          echo "PROD Deployment: ${{ github.event.inputs.PROD_Deploy }}"
           echo "PROD Customer: ${{ github.event.inputs.PROD_Customer }}"
 
       - name: Conditional Deployment for PPE
-        if: ${{ github.event.inputs.PPE_Customer != null }}
+        if: ${{ github.event.inputs.PPE_Deploy == 'true' && github.event.inputs.PPE_Customer != '' }}
         run: |
           echo "Deploying to PPE environment for selected customer: ${{ github.event.inputs.PPE_Customer }}"
           # Add your deployment steps for PPE here
 
       - name: Conditional Deployment for PROD
-        if: ${{ github.event.inputs.PROD_Customer != null }}
+        if: ${{ github.event.inputs.PROD_Deploy == 'true' && github.event.inputs.PROD_Customer != '' }}
         run: |
           echo "Deploying to PROD environment for selected customer: ${{ github.event.inputs.PROD_Customer }}"
           # Add your deployment steps for PROD here
