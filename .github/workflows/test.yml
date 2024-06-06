@@ -3,18 +3,14 @@ name: Manual Deploy with Inputs
 on:
   workflow_dispatch:
     inputs:
-      PPE_Deploy:
-        description: 'Deploy to PPE'
-        type: boolean
-        default: false
-        required: false
+    
       PPE_Customer:
         description: 'Select customer for PPE deployment'
         type: string
         required: false
         default: ''
-      PROD_Deploy:
-        description: 'Deploy to PROD'
+      anonymous_PPE:
+        description: 'anonymous_PPE'
         type: boolean
         default: false
         required: false
@@ -23,6 +19,11 @@ on:
         type: string
         required: false
         default: ''
+      KHQ_PROD:
+        description: 'KHQ_PROD'
+        type: boolean
+        default: false
+        required: false
 
 jobs:
   deploy:
