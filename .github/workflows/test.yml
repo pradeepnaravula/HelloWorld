@@ -3,25 +3,13 @@ name: Manual Deploy with Inputs
 on:
   workflow_dispatch:
     inputs:
-      DeployEnvironment:
-        description: 'Choose deployment environment'
-        type: choice
-        required: true
-        options:
-          - PPE
-          - PROD
-      InfoMessage:
-        description: 'Select the Customers to deploy'
-        type: string
-        required: false
-        default: 'Select the customers to deploy'
-      Anonymous_PPE:
-        description: 'Anonymous_PPE'
+      PPE_Deploy:
+        description: 'Deploy to PPE'
         type: boolean
         default: false
         required: false
-      KHQ_PROD:
-        description: 'KHQ_PROD'
+      PROD_Deploy:
+        description: 'Deploy to PROD'
         type: boolean
         default: false
         required: false
@@ -35,19 +23,21 @@ jobs:
 
       - name: Display input values
         run: |
-          echo "Deploy Environment: ${{ github.event.inputs.DeployEnvironment }}"
+          echo "PPE Deployment: ${{ github.event.inputs.PPE_Deploy }}"
+          echo "PROD Deployment: ${{ github.event.inputs.PROD_Deploy }}"
+
+      - name: Conditional Deployment for PPE
+        if: ${{ github.event.inputs.PPE_Deploy == 'true' }}
+        run: |
+          echo "Deploying to PPE environment"
           echo "Info Message: ${{ github.event.inputs.InfoMessage }}"
-          echo "Deploy to Anonymous: ${{ github.event.inputs.Anonymous }}"
-          echo "Deploy to KHQ: ${{ github.event.inputs.KHQ }}"
+          echo "Anonymous: ${{ github.event.inputs.Anonymous }}"
+          # Add your deployment steps for PPE here
 
-      - name: Conditional Deployment for PPE to Anonymous
-        if: ${{ github.event.inputs.DeployEnvironment == 'PPE' && github.event.inputs.Anonymous == 'true' }}
+      - name: Conditional Deployment for PROD
+        if: ${{ github.event.inputs.PROD_Deploy == 'true' }}
         run: |
-          echo "Deploying to PPE environment for Anonymous customer"
-          # Add your deployment steps for PPE Anonymous here
-
-      - name: Conditional Deployment for PROD to KHQ
-        if: ${{ github.event.inputs.DeployEnvironment == 'PROD' && github.event.inputs.KHQ == 'true' }}
-        run: |
-          echo "Deploying to PROD environment for KHQ customer"
-          # Add your deployment steps for PROD KHQ here
+          echo "Deploying to PROD environment"
+          echo "Info Message: ${{ github.event.inputs.InfoMessage }}"
+          echo "KHQ: ${{ github.event.inputs.KHQ }}"
+          # Add your deployment steps for PROD here
