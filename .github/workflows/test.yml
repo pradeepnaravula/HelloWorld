@@ -5,7 +5,7 @@ on:
     inputs:
     
       PPE_Customer:
-        description: 'Select customer for PPE deployment'
+        description: 'PPE deployment'
         type: string
         required: false
         default: ''
@@ -15,7 +15,7 @@ on:
         default: false
         required: false
       PROD_Customer:
-        description: 'Select customer for PROD deployment'
+        description: 'PROD deployment'
         type: string
         required: false
         default: ''
