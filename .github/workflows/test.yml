@@ -8,7 +8,7 @@ on:
         description: 'PPE deployment'
         type: string
         required: false
-        default: ''
+        default: 'Select the Customer'
       anonymous_PPE:
         description: 'anonymous_PPE'
         type: boolean
@@ -18,7 +18,7 @@ on:
         description: 'PROD deployment'
         type: string
         required: false
-        default: ''
+        default: 'Select the Customer'
       KHQ_PROD:
         description: 'KHQ_PROD'
         type: boolean
