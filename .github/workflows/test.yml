@@ -1,16 +1,31 @@
 name: Manual Deploy with Inputs
-
-on:
-  workflow_dispatch:
+on: 
+  workflow_call:
     inputs:
-    
-      PPE_Customer:
-        description: 'PPE deployment'
+      deployEnvironment:
+        description: 'Environment to deploy to'
+        required: true
         type: string
-        required: false
-        default: 'Select the Customer'
-      anonymous_PPE:
-        description: 'anonymous_PPE'
+      BuildVersion:
+        description: 'Build Version being deployed'
+        required: true
+        type: string   
+      GKECLUSTER: 
+        description: 'GKE Cluster to deploy to'
+        required: true
+        type: string   
+      GKEZONE: 
+        description: 'GKE zone to deploy to'
+        required: true
+        type: string   
+      PROJECTID: 
+        description: 'GCP project name'
+        required: true
+        type: string
+      MIGRATIONS_DIR:
+        description: 'Directory with DB migrations project'
+        required: true
+        type: string
         type: boolean
         default: false
         required: false
