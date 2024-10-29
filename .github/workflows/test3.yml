@@ -8,7 +8,7 @@ on:
         required: true
         default: 'latest'
   schedule:
-    - cron: '24 * * * *'
+    - cron: '30 * * * *'
 
 jobs:
   check_changes:
