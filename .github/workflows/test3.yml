@@ -1,0 +1,36 @@
+name: FI - test
+
+on: 
+  workflow_dispatch:
+    inputs:
+      inputBuildVersion:
+        description: 'The build version to deploy'
+        required: true
+        default: 'latest'
+  schedule:
+    - cron: '20 * * * *'
+
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changes_detected: ${{ steps.check_changes.outputs.changes_detected }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check for changes in last 24 hours
+        id: check_changes
+        run: |
+          changes=$(git log --oneline --since '2 hours ago')
+          
+          if [ -z "$changes" ]; then
+            echo "No changes detected in the last 24 hours."
+            echo "changes_detected=false" >> "$GITHUB_OUTPUT"
+            # echo "::set-output name=changes_detected::false"
+          else
+            echo "Changes detected in the last 24 hours."
+            echo "changes_detected=true" >> "$GITHUB_OUTPUT"
+            # echo "::set-output name=changes_detected::true"
+          fi
