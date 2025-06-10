@@ -1,13 +1,1 @@
-name: Display IST Time
-
-on:
-  workflow_dispatch:  # Allows you to run this manually from the GitHub UI
-
-jobs:
-  show-time:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Show current IST time
-        run: |
-          echo "Current IST Time:"
-          TZ=
+pradeep1
