@@ -6,21 +6,46 @@ on:
       - main
 
 jobs:
-  test-restart:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Build Docker image
-      run: docker build -t tomcat-test .
+      - name: Pull Tomcat image
+        run: docker pull tomcat:9.0
 
-    - name: Run container and execute script
-      run: |
-        docker run -d --name tomcat-test-container tomcat-test tail -f /dev/null
-        docker exec tomcat-test-container /usr/local/tomcat/restart-tomcat.sh
+      - name: Create and start container with Tomcat running
+        run: |
+          docker create --name tomcat-test-container tomcat:9.0
+          docker cp restart-tomcat.sh tomcat-test-container:/usr/local/tomcat/restart-tomcat.sh
+          docker start tomcat-test-container
+          docker exec tomcat-test-container chmod +x /usr/local/tomcat/restart-tomcat.sh
 
-    - name: Cleanup
-      if: always()
-      run: docker rm -f tomcat-test-container
+      - name: Run and verify Tomcat restart
+        run: |
+          docker exec tomcat-test-container bash -c '
+            echo "✅ Capturing original Tomcat PID..."
+            OLD_PID=$(ps -ef | grep "org.apache.catalina.startup.Bootstrap" | grep -v grep | awk "{print \$2}")
+            echo "Old PID: $OLD_PID"
+
+            echo "▶️ Running restart script..."
+            /usr/local/tomcat/restart-tomcat.sh
+            sleep 5
+
+            echo "✅ Capturing new Tomcat PID..."
+            NEW_PID=$(ps -ef | grep "org.apache.catalina.startup.Bootstrap" | grep -v grep | awk "{print \$2}")
+            echo "New PID: $NEW_PID"
+
+            if [ "$OLD_PID" != "$NEW_PID" ] && [ -n "$NEW_PID" ]; then
+              echo "✅ Tomcat restarted successfully."
+            else
+              echo "❌ Tomcat did not restart properly."
+              exit 1
+            fi
+          '
+
+      - name: Clean up container
+        if: always()
+        run: docker rm -f tomcat-test-container
