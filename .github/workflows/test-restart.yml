@@ -1,0 +1,26 @@
+name: Test Restart Tomcat Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-restart:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: docker build -t tomcat-test .
+
+    - name: Run container and execute script
+      run: |
+        docker run -d --name tomcat-test-container tomcat-test tail -f /dev/null
+        docker exec tomcat-test-container /usr/local/tomcat/restart-tomcat.sh
+
+    - name: Cleanup
+      if: always()
+      run: docker rm -f tomcat-test-container
